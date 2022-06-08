@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class CambiarRotacion : MonoBehaviour
 {
-    [Header("MirarCamara")]
-    [SerializeField] private Vector3 Target;
+    [Header("MovimientoCamara")]
+    private Vector3 objetivo;
     [SerializeField] private Camera camara;
 
-    [Header("Movimiento")]
+    [Header("MovimientoJugador")]
     [SerializeField] private float velocidadMovimiento;
-    [SerializeField] private Vector2 direccion;
+    private Vector2 direccion;
     private Rigidbody2D rb2D;
     private Vector2 input;
-
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -21,18 +20,17 @@ public class CambiarRotacion : MonoBehaviour
 
     private void Update()
     {
-        Target = camara.ScreenToWorldPoint(Input.mousePosition);
-        // Get Angle in Radians
-        float AngleRad = Mathf.Atan2(Target.y - transform.position.y, Target.x - transform.position.x);
-        // Get Angle in Degrees
-        float AngleDeg = (180 / Mathf.PI) * AngleRad - 90;
-        // Rotate Object
-        this.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+        objetivo = camara.ScreenToWorldPoint(Input.mousePosition);
+
+        float anguloRadianes = Mathf.Atan2(objetivo.y - transform.position.y, objetivo.x - transform.position.x);
+        float anguloGrados = (180 / Mathf.PI) * anguloRadianes - 90;
+        transform.rotation = Quaternion.Euler(0, 0, anguloGrados);
 
         input.x = Input.GetAxisRaw("Horizontal");
         input.y = Input.GetAxisRaw("Vertical");
         direccion = input.normalized;
     }
+
     private void FixedUpdate()
     {
         rb2D.MovePosition(rb2D.position + direccion * velocidadMovimiento * Time.fixedDeltaTime);
