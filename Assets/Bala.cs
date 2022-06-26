@@ -6,11 +6,13 @@ public class Bala : MonoBehaviour
 {
     [SerializeField] private float velocidad;
     [SerializeField] private float daño;
+    [SerializeField] private string Si;
 
     private void Update()
     {
         transform.Translate(Vector2.up * velocidad * Time.deltaTime);
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemigo"))
